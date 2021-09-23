@@ -1,13 +1,12 @@
-"""Crypto API."""
-
 from typing import Dict, List
 
 import requests
 from errors import CryptoAPIError
 
-# API Documentation - https://www.coingecko.com/en/api#explore-api
-
 class CryptoAPI:
+    """Crypto API."""
+    # API Documentation - https://www.coingecko.com/en/api#explore-api
+
     BASE_URL = 'https://api.coingecko.com/api/v3'
 
     def _request(self, path: str,  params: dict = None, method: str = 'GET'):
@@ -35,8 +34,8 @@ class CryptoAPI:
     def get_coin_price_history(self, coin_id: str, currency: str='usd', days: int=9, interval: str='daily') -> List[List]:
         path = f'coins/{coin_id}/market_chart'
         params = {
-            'vs_currency':'usd',
-            'days':9,
+            'vs_currency':currency,
+            'days':days,
             'interval':interval
         }
         return self._request(path, params).get('prices')

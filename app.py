@@ -1,14 +1,12 @@
 """Crypto Interview Assessment Module."""
 
-import os
-from typing import Coroutine
-
-from dotenv import find_dotenv, load_dotenv
-
 from crypto_api import crypto_api
 from errors import CryptoAPIError
 
+from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv(raise_error_if_not_found=True))
+
+from daos import crypto_dao
 
 class CoinTrader:
     def __init__(self):
@@ -18,7 +16,9 @@ class CoinTrader:
         try:
             self.top_coins = crypto_api.get_coins(per_page=3)
         except CryptoAPIError as e:
+            # TODO - LOG:
             pass
+        crypto_dao.insert_many([(c['symbol'], c['name'], c['current_price'], c['market_cap_rank']) for c in self.top_coins])
 
     def make_trades(self):
         for coin in self.top_coins:
