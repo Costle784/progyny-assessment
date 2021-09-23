@@ -1,0 +1,2 @@
+class CryptoAPIError(Exception):
+    pass
