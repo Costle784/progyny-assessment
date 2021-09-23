@@ -21,29 +21,28 @@ class CryptoAPI:
 
         raise CryptoAPIError(f"Crypto API return status code: {res.status_code} - {json_resp.get('error')}")
 
-    def get_coins(self) -> List[Dict]:
-        """This function will get the top 10 coins at the current time, sorted by market cap in desc order."""
+    def get_coins(self, currency: str='usd', order: str='market_cap_desc', per_page: int=10, page: int=1) -> List[Dict]:
+        """This function will fetch coin market data at the current time given a currency and sort order."""
         path = 'coins/markets'
         params = {
-            'vs_currency':'usd',
-            'order':'market_cap_desc',
-            'per_page':10,
-            'page':1,
-            'sparkline': 'false'
+            'vs_currency': currency,
+            'order': order,
+            'per_page':per_page,
+            'page':page,
         }
         return self._request(path, params)
 
-    def get_coin_price_history(self, coin_id: str) -> List[List]:
+    def get_coin_price_history(self, coin_id: str, currency: str='usd', days: int=9, interval: str='daily') -> List[List]:
         path = f'coins/{coin_id}/market_chart'
         params = {
             'vs_currency':'usd',
             'days':9,
-            'interval':'daily'
+            'interval':interval
         }
         return self._request(path, params).get('prices')
 
     # utilize this function when submitting an order
-    def submit_order(coin_id: str, quantity: int, bid: float):
+    def submit_order(self, coin_id: str, quantity: int, bid: float):
         """
         Mock function to submit an order to an exchange.
         Assume order went through successfully and the return value is the price the order was filled at.

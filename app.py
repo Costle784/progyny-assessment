@@ -1,6 +1,7 @@
 """Crypto Interview Assessment Module."""
 
 import os
+from typing import Coroutine
 
 from dotenv import find_dotenv, load_dotenv
 
@@ -9,18 +10,25 @@ from errors import CryptoAPIError
 
 load_dotenv(find_dotenv(raise_error_if_not_found=True))
 
+class CoinTrader:
+    def __init__(self):
+        pass
 
-# You can access the environment variables as such, and any variables from the .env file will be loaded in for you to use.
-# os.getenv("DB_HOST")
+    def fetch_top_coins(self):
+        try:
+            self.top_coins = crypto_api.get_coins(per_page=3)
+        except CryptoAPIError as e:
+            pass
 
-# Start Here
-try:
-    print(crypto_api.get_coins())
-except CryptoAPIError as e:
-    print(e)
+    def make_trades(self):
+        for coin in self.top_coins:
+            ten_day_avg = sum([price[1] for price in crypto_api.get_coin_price_history(coin['id'])]) / 10
+            if coin['current_price'] < ten_day_avg:
+                # TODO - LOG:
+                trade_val = crypto_api.submit_order(coin['id'], 1, coin['current_price'])
 
 
-try:
-    print(crypto_api.get_coin_price_history('bitcoin'))
-except CryptoAPIError as e:
-    print(e)
+if __name__ == '__main__':
+    coin_trader = CoinTrader()
+    coin_trader.fetch_top_coins()
+    coin_trader.make_trades()
