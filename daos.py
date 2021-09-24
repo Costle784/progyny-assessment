@@ -5,10 +5,10 @@ class CryptoDAO(DB):
     """Class for handling database interactions for top_crypto_currencies table"""
     TABLE_NAME = 'top_crypto_currencies'
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.create_tables()
 
-    def create_tables(self):
+    def create_tables(self) -> None:
         with self.get_cursor(self.get_connection()) as cursor:
             sql = f"""CREATE TABLE IF NOT EXISTS {self.TABLE_NAME} (
                     id INT(11) AUTO_INCREMENT PRIMARY KEY,
@@ -20,7 +20,7 @@ class CryptoDAO(DB):
             )"""
             cursor.execute(sql)
 
-    def insert_many(self, data: List[Tuple]):
+    def insert_many(self, data: List[Tuple]) -> None:
         with self.get_cursor(self.get_connection()) as cursor:
             sql = f"""INSERT INTO {self.TABLE_NAME} (symbol, name, current_price, `rank`) VALUES (%s, %s, %s, %s)"""
             cursor.executemany(sql, data)
