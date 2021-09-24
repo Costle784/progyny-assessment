@@ -1,0 +1,4 @@
+# runs crytpo trader script every hour
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+0 * * * * python /app/app.py >> /var/log/cron.log 2>&1

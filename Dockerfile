@@ -32,4 +32,11 @@ RUN poetry install --no-interaction
 
 COPY . ${WORKDIR}
 
-CMD /bin/bash
+# initializing cron job
+RUN apt-get install -y cron
+COPY crypto.crontab /etc/cron.d/crypto-cron
+RUN chmod 0644 /etc/cron.d/crypto-cron
+RUN chmod +x /app/app.py
+RUN crontab /etc/cron.d/crypto-cron
+
+CMD ["cron", "-f"]
