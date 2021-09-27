@@ -3,6 +3,7 @@ from typing import List, Tuple
 
 class CryptoDAO(DB):
     """Class for handling database interactions for top_crypto_currencies table"""
+
     TABLE_NAME = 'top_crypto_currencies'
 
     def __init__(self) -> None:

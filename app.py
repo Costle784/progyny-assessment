@@ -11,7 +11,9 @@ load_dotenv(find_dotenv(raise_error_if_not_found=True))
 from daos import crypto_dao
 
 class CoinTrader:
-    def fetch_top_coins(self):
+    """Fetches top crypto coins, stores the results, and makes trades."""
+
+    def fetch_top_coins(self) -> None:
         try:
             self.top_coins = crypto_api.get_coins(per_page=3)
         except CryptoAPIError as e:
@@ -24,7 +26,7 @@ class CoinTrader:
             error_log.exception(e)
 
 
-    def make_trades(self):
+    def make_trades(self) -> None:
         for coin in self.top_coins:
             try:
                 ten_day_avg = sum([price[1] for price in crypto_api.get_coin_price_history(coin['id'])]) / 10
